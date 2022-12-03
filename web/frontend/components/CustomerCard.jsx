@@ -119,18 +119,17 @@ export function CustomerCard() {
                 setUsername={setUsername} />
         </p>
         <div>
-        <UserInfoCard userData={userData} />
+       
         </div>
         <TextContainer spacing="loose">
-          <p>
-            Look for customer {username}
-          </p>
+
           <Heading element="h4">
-            Total Customers
+            Customers
             <DisplayText size="medium">
-              <TextStyle variation="strong">
+              {/* <TextStyle variation="strong">
                 {isLoadingCount ? "-" : data.count}
-              </TextStyle>
+              </TextStyle> */}
+               <UserInfoCard userData={userData} />
             </DisplayText>
           </Heading>
         </TextContainer>
