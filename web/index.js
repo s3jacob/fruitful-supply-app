@@ -1,4 +1,4 @@
-// @ts-check
+// @ts-nocheck
 import { join } from "path";
 import { readFileSync } from "fs";
 import express from "express";
@@ -155,7 +155,7 @@ export async function createServer(
     res.status(status).send({ success: status === 200, error });
   });
 
-  app.get("/api/customer/search", async (req, res) => {
+  app.get(`/api/customer/search`, async (req, res) => {
     const session = await Shopify.Utils.loadCurrentSession(
       req,
       res,
@@ -166,19 +166,17 @@ export async function createServer(
     const { Customer } = await import(
       `@shopify/shopify-api/dist/rest-resources/${Shopify.Context.API_VERSION}/index.js`
     );
-    try {
-     const varr= await Customer.search({
-        session: session,
-        query: "email:sandeep@litmus7.com",
-      });
-      console.log(`Customer found: ${JSON.stringify(varr)}`);
-    } catch (e) {
-      console.log(`Failed to process products/create: ${e.message}`);
-      status = 500;
-      error = e.message;
-    }
+   
+    const username = req.headers["username"];
+    console.log(`Username: ${JSON.stringify(username)}`);
+    const userData= await Customer.search({
+      session: session,
+      query: `email:${username}`,
+    })
     
-    res.status(status).send({ success: status === 200, error });
+    console.log(`Customer --> : ${JSON.stringify(userData)}`);
+    res.status(200).send(userData);
+
   });
 
   // All endpoints after this point will have access to a request.body
